@@ -9,7 +9,7 @@ It's that:
 
 ## Usage:
 
-![Screenshot at Aug 07 17-49-52](https://user-images.githubusercontent.com/24318966/89657845-69ed9400-d8d6-11ea-92fa-960cf17fff63.png)
+![image](https://user-images.githubusercontent.com/24318966/89705414-e4b1c000-d965-11ea-961b-96f17a2f9390.png)
 
 ## Why?
 
