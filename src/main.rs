@@ -10,23 +10,28 @@ fn main() {
         .author(crate_authors!())
         .about("Executes Squid proxy cachemgr commands")
         .arg(Arg::with_name("command")
-                .about("A command to execute")
+                .help("A command to execute (e.g: \"menu\")")
                 .required(true))
         .arg(Arg::with_name("host")
-                .about("Squid proxy address")
-                .short('h')
+                .help("Squid proxy IP address")
+                .short("h")
                 .long("host")
                 .required(true)
                 .takes_value(true))
         .arg(Arg::with_name("port")
-                .about("Squid proxy port")
-                .short('p')
+                .help("Squid proxy port")
+                .short("p")
                 .long("port")
                 .default_value("3128")
                 .takes_value(true))
+        .arg(Arg::with_name("user")
+                .help("Squid proxy cachemgr username")
+                .short("u")
+                .long("user")
+                .takes_value(true))
         .arg(Arg::with_name("with_password")
-                .about("Squid proxy cachemgr password")
-                .short('w')
+                .help("Squid proxy cachemgr password")
+                .short("w")
                 .long("with_password")
                 .takes_value(true))
         .get_matches();
@@ -43,8 +48,12 @@ fn main() {
     let host = format!("Host: {}\r\n", matches.value_of("host").unwrap());
     let accept = "Accept: */*\r\n";
 
-    let auth = if matches.is_present("with_password") {
-        format!("Authorization: Basic {}\r\n", encode([":", matches.value_of("with_password").unwrap()].concat()))
+    let auth = if matches.is_present("user") || matches.is_present("with_password") {
+        format!("Authorization: Basic {}\r\n", encode([
+                if let Some(user) = matches.value_of("user") { user } else { "" },
+                ":",
+                if let Some(password) = matches.value_of("with_password") { password } else { "" }
+        ].concat()))
     } else {
         "\r\n".to_string()
     };
